@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Header from "./components/organisms/header/Header";
 import Button from "./components/atoms/button/button";
 import Statistics from "./components/atoms/statistics/statistics";
+import H3 from "./components/atoms/h3/h3";
 
 
 const App = () => {
@@ -36,7 +37,8 @@ const App = () => {
       <Button text={"Good"} handleClick={increaseGood} />
       <Button text={"Neutral"} handleClick={increaseNeutral} />
       <Button text={"Bad"} handleClick={increaseBad} />
-      <Statistics good = {good} neutral = {neutral} bad = {bad} intAll = {intAll} doubleAverage = {doubleAverage} doublePositive = {doublePositive} />
+      <H3>Statistics</H3>
+      <Statistics good = {good} neutral = {neutral} bad = {bad} intAll = {intAll} doubleAverage = {doubleAverage} doublePositive = {doublePositive}/>
     </div>
   );
 };

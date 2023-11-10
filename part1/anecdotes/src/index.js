@@ -1,12 +1,27 @@
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import Button from './components/atoms/button/button';
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
 
+  const isSelected = () =>{
+    
+    setSelected(getRandom)
+  };
+
+  const getRandom = () => {
+    let auxRandom = Math.floor(Math.random() * props.anecdotes.length);
+    if(auxRandom === selected){
+      auxRandom = Math.floor(Math.random() * props.anecdotes.length)
+    };
+    return auxRandom
+  };
+
   return (
     <div>
-      {props.anecdotes[selected]}
+      <p>{props.anecdotes[selected]}</p>
+      <Button text={"next anecdote"} handleClick={isSelected}/>
     </div>
   )
 }

@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 import Button from './components/atoms/button/button';
 
 const App = (props) => {
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(0);
+  const [vote, setVote] = useState(new Uint8Array(props.anecdotes.length));
 
   const isSelected = () =>{
     
     setSelected(getRandom)
+  };
+
+  const setToVote = ()=>{
+    const auxVote = {...vote};
+    auxVote[selected] += 1;
+    setVote(auxVote);
+    console.log(auxVote[selected]);
+    console.log(auxVote);
   };
 
   const getRandom = () => {
@@ -15,13 +24,21 @@ const App = (props) => {
     if(auxRandom === selected){
       auxRandom = Math.floor(Math.random() * props.anecdotes.length)
     };
-    return auxRandom
+    return auxRandom;
   };
+
+  console.log("Aux " + selected);
+  
+  
+ 
 
   return (
     <div>
       <p>{props.anecdotes[selected]}</p>
-      <Button text={"next anecdote"} handleClick={isSelected}/>
+      <p>Has {vote[selected]} votes</p>
+      <Button text={"Vote"} handleClick={setToVote}/>
+      <Button text={"Next anecdote"} handleClick={isSelected}/>
+      
     </div>
   )
 }
@@ -38,4 +55,4 @@ const anecdotes = [
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
   document.getElementById('root')
-)
+) 

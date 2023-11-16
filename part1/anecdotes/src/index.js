@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Button from './components/atoms/button/button';
+import Header from './components/organisms/header/Header';
 
 const App = (props) => {
   const [selected, setSelected] = useState(0);
@@ -15,8 +16,6 @@ const App = (props) => {
     const auxVote = {...vote};
     auxVote[selected] += 1;
     setVote(auxVote);
-    console.log(auxVote[selected]);
-    console.log(auxVote);
   };
 
   const getRandom = () => {
@@ -27,18 +26,37 @@ const App = (props) => {
     return auxRandom;
   };
 
-  console.log("Aux " + selected);
-  
-  
- 
+  const MostVotes = (opcion) => {
+    var auxVote = {...vote};
+    let max = -Infinity;
+    let maxIndex = -1;
 
-  return (
+Object.keys(auxVote).forEach(key => {
+    const currentValue = auxVote[key];
+    if (currentValue > max) {
+        max = currentValue;
+        maxIndex = Number(key);
+    }
+});
+if(opcion === "maxVote"){
+  return max;
+}else {
+  return maxIndex
+}
+}
+
+console.log(vote)
+
+   return (
     <div>
+      <Header text={"Anecdote of the day"}/>
       <p>{props.anecdotes[selected]}</p>
       <p>Has {vote[selected]} votes</p>
       <Button text={"Vote"} handleClick={setToVote}/>
       <Button text={"Next anecdote"} handleClick={isSelected}/>
-      
+      <Header text={"Anecdote with most votes"}/>
+      <p>{anecdotes[MostVotes()]}</p>
+      <p>votes: {MostVotes("maxVote")}</p>
     </div>
   )
 }

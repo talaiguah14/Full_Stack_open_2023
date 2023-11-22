@@ -1,14 +1,11 @@
 import React from "react";
 
-const Total = ({parts})=>{
+const Total = ({...props})=>{
+    console.log("Total:",props)
     return (
         <h4>
-            Total of: {
-                parts.reduce(
-                    (a,b)=>a + b.exercises,
-                    0,)} exercises
+            {props.children}
         </h4>
     );
 };
-
 export default Total;

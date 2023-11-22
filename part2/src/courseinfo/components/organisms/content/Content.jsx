@@ -1,13 +1,11 @@
 import React from "react";
 import Part from "../../atoms/part/Part";
 
-const Content = ({ parts }) => {
+const Content = (props) => {
+  const {name,value,id} = props
+
   return (
-    <article>
-      {parts.map(parts => (
-        <Part key={parts.id} name={parts.name} value={parts.exercises} />
-      ))}
-    </article>
+        <Part key={id} name={name} value={value} />
   );
 };
 

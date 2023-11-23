@@ -16,16 +16,10 @@ const App = () => {
         name:newName,
         id:persons.length + 1 
     };
-    
-    const validatePerson = persons.map(person => person.name)
-    if(validatePerson.includes(newName)){
-      window.alert(`${newName} is already added to phonebook`)
-    }else{
-      setPersons(persons.concat(personObject));
-      setNewName('');
-    };
-    
+    setPersons(persons.concat(personObject));
+    setNewName('');
   };
+  console.log('persons',persons)
   return (
     <div>
       <h2>Phonebook</h2>

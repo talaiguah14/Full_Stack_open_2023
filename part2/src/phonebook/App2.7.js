@@ -2,24 +2,19 @@ import React, { useState } from "react";
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { id: 1, name: "Arto Hellas", number: 8756 },
+    { id: 1, name: "Arto Hellas"},
   ]);
   const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
 
   const handleNewNameChange = (event) => {
     setNewName(event.target.value);
-  };
-  const handlenewNumberChange = (event) => {
-    setNewNumber(event.target.value);
   };
 
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
       id: persons.length + 1,
-      name: newName,
-      number: newNumber,
+      name: newName
     };
 
     const validatePerson = persons.map((person) => person.name);
@@ -28,7 +23,6 @@ const App = () => {
     } else {
       setPersons(persons.concat(personObject));
       setNewName("");
-      setNewNumber("");
     }
   };
   return (
@@ -39,9 +33,6 @@ const App = () => {
           name: <input value={newName} onChange={handleNewNameChange} />
         </div>
         <div>
-          number: <input value={newNumber} onChange={handlenewNumberChange} />
-        </div>
-        <div>
           <button type="submit">add</button>
         </div>
       </form>
@@ -49,15 +40,11 @@ const App = () => {
       <ul>
         <ul>
           {persons.map((person) => (
-            <li key={person.id}>
-              {`${person.name} ${person.number}`}
-            </li>
+            <li key={person.id}>{person.name}</li>
           ))}
         </ul>
       </ul>
-      <div>
-        {`debug: ${newName} ${newNumber}`}
-      </div>
+      <div>debug: {newName}</div>
     </div>
   );
 };

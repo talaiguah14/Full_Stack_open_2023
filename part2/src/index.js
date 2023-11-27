@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './phonebook/App';
+import App from './countries/App';
 
 const root = createRoot(document.getElementById('root'));
 root.render(

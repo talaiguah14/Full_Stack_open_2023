@@ -1,8 +1,10 @@
 import React from "react";
 import ContryInformation from "../countryInformation/CountryInformation";
 
+import ShowCountry from "../showCountry/ShowCountry";
+
 const CountriesInformation = (props) => {
-  const { countryFind } = props;
+  const { countryFind,filterCountries } = props;
   const count = countryFind.length;
   if (count > 10) {
     return <p>To manu matches, specify abother filter</p>;
@@ -10,13 +12,14 @@ const CountriesInformation = (props) => {
     return (
       <ul>
         {countryFind.map((country) => (
-          <li key={country.cca2 + country.ccn3}>{country.name.common}</li>
+          <ShowCountry key={country.name.common} country={country} />
         ))}
       </ul>
     );
   } else if (count === 1){
+    const select = countryFind.find((element) => element.name.common.toLowerCase() === filterCountries.toLowerCase())
     return ( <ul>
-        <ContryInformation countries={countryFind}/>
+        <ContryInformation country={select}/>
     </ul>
     );
   }

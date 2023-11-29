@@ -30,7 +30,7 @@ const App = () => {
         <div>
             <h1>Countries</h1>
             <CountriesForm filterCountries={filterCountries} handleFilterCountries={handleFilterCountries}/>
-            <CountriesInformation countryFind={countryFind} filterCountries={filterCountries}/>
+            <CountriesInformation countryFind={countryFind}/>
         </div>
     );
 };

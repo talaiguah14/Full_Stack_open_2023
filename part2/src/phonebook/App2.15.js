@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState,useEffect } from "react";
+import axios from 'axios'
 import Filter from "./components/organisms/filter/Filter";
 import PersonForm from "./components/organisms/personForm/PersonForm";
 import Persons from "./components/organisms/person/Person";
-import PhonebookService from "../../src/services/phonebookService";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,11 +10,14 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterPersons, setFilterPersons] = useState("");
 
-  useEffect(() => {
-    PhonebookService.getAll().then((initialPerson) => {
-      setPersons(initialPerson);
-    });
-  }, []);
+  useEffect(()=>{
+    axios
+    .get('http://localhost:3001/persons')
+    .then(response=>{
+      setPersons(response.data);
+    })
+  },[])
+
 
   const personToShow = filterPersons
     ? persons.filter((person) =>
@@ -41,15 +43,15 @@ const App = () => {
       number: newNumber,
     };
 
+    
     const validatePerson = persons.map((person) => person.name.toLowerCase());
     if (validatePerson.includes(newName.toLowerCase())) {
       window.alert(`${newName} is already added to phonebook`);
     } else {
-      PhonebookService.createPerson(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-      });
+      setPersons(persons.concat(personObject));
+      setNewName("");
+      setNewNumber("");
+      axios.post("http://localhost:3001/persons",personObject).then(response => {console.log(response)});
     }
   };
   return (

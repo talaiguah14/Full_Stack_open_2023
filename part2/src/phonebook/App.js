@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/organisms/filter/Filter";
 import PersonForm from "./components/organisms/personForm/PersonForm";
 import Persons from "./components/organisms/person/Person";
@@ -64,7 +63,7 @@ const App = () => {
         newNumber={newNumber}
         handlenewNumberChange={handlenewNumberChange}
       />
-      <Persons persons={persons} personToShow={personToShow} />
+      <Persons persons={persons} personToShow={personToShow} setPersons={setPersons}/>
       <div>{`debug: ${newName} ${newNumber}`}</div>
     </div>
   );

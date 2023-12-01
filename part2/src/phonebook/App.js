@@ -43,6 +43,7 @@ const App = () => {
       number: newNumber,
     };
 
+    
     const validatePerson = persons.map((person) => person.name.toLowerCase());
     if (validatePerson.includes(newName.toLowerCase())) {
       window.alert(`${newName} is already added to phonebook`);
@@ -50,6 +51,7 @@ const App = () => {
       setPersons(persons.concat(personObject));
       setNewName("");
       setNewNumber("");
+      axios.post("http://localhost:3001/persons",personObject).then(response => {console.log(response)});
     }
   };
   return (

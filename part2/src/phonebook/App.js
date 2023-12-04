@@ -62,7 +62,7 @@ const App = () => {
             setNewNumber("");
           }
         ).catch(error=> {
-          setErrorMessage(`Person ${existingPerson.name} was already removed from server`)
+          setErrorMessage(`Information of ${existingPerson.name} has already been removed from server`)
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)

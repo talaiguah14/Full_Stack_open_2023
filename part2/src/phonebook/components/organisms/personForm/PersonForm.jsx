@@ -20,7 +20,7 @@ const PersonForm = (props) => {
         number:
         <Input value={newNumber} onChange={handlenewNumberChange} />
       </div>
-      <Button type="submit">Add</Button>
+      <Button type="submit" text={"Add"}/>
     </form>
   );
 };

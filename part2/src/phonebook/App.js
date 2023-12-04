@@ -40,9 +40,26 @@ const App = () => {
       number: newNumber,
     };
 
-    const validatePerson = persons.map((person) => person.name.toLowerCase());
-    if (validatePerson.includes(newName.toLowerCase())) {
-      window.alert(`${newName} is already added to phonebook`);
+    const existingPerson = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+    if (existingPerson) {
+      const confirm = window.confirm(
+        `${existingPerson.name} is alredy added to phonebook, replacethe old number with a new one?`
+      );
+      if (confirm) {
+        PhonebookService.updatePerson(existingPerson.id, personObject).then(
+          (updatedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== existingPerson.id ? person : updatedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          }
+        );
+      }
     } else {
       PhonebookService.createPerson(personObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
@@ -63,7 +80,11 @@ const App = () => {
         newNumber={newNumber}
         handlenewNumberChange={handlenewNumberChange}
       />
-      <Persons persons={persons} personToShow={personToShow} setPersons={setPersons}/>
+      <Persons
+        persons={persons}
+        personToShow={personToShow}
+        setPersons={setPersons}
+      />
       <div>{`debug: ${newName} ${newNumber}`}</div>
     </div>
   );

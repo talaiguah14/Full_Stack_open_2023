@@ -22,9 +22,9 @@ const Persons = ({ persons, personToShow, setPersons }) => {
       <ul>
         <ul>
           {persons.map((person) => (
-            <li key={person.id}>
+            <li className='note' key={person.id}>
               {`${person.name} ${person.number}`}
-              <Button
+              <Button key={person.id}
                 handleClick={() => deletePersos(person)}
                 text={"Delete"}
               />
@@ -36,7 +36,7 @@ const Persons = ({ persons, personToShow, setPersons }) => {
       <ul>
         <ul>
           {personToShow.map((onePerson) => (
-            <li
+            <li className='note'
               key={onePerson.id}
             >{`${onePerson.name} ${onePerson.number}`}</li>
           ))}

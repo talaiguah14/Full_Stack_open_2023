@@ -3,12 +3,15 @@ import Filter from "./components/organisms/filter/Filter";
 import PersonForm from "./components/organisms/personForm/PersonForm";
 import Persons from "./components/organisms/person/Person";
 import PhonebookService from "../../src/services/phonebookService";
+import Notification from "./components/atoms/notification/notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterPersons, setFilterPersons] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [confirmMessage, setConfirmMessage] = useState(null)
 
   useEffect(() => {
     PhonebookService.getAll().then((initialPerson) => {
@@ -58,20 +61,35 @@ const App = () => {
             setNewName("");
             setNewNumber("");
           }
-        );
+        ).catch(error=> {
+          setErrorMessage(`Person ${existingPerson.name} was already removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(person => person.id !== existingPerson.id))
+        });
       }
     } else {
-      PhonebookService.createPerson(personObject).then((returnedPerson) => {
+      PhonebookService.createPerson(personObject).then((response) => {
+        const returnedPerson = response.data
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewNumber("");
+        if(response.status === 201 && returnedPerson.id !== null){
+          setConfirmMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setConfirmMessage(null)
+          }, 5000)
+        }
       });
     }
   };
   return (
     <div>
-      <h2>Phonebook</h2>
-      <Filter value={filterPersons} onChange={handlenewFilterPersons} />
+      <h1>Phonebook</h1>
+      <Notification message={confirmMessage} className={"confirm"}/>
+      <Notification message={errorMessage} className={"error"}/>
+      <Filter  name={"txtFilter"} value={filterPersons} onChange={handlenewFilterPersons} />
       <h2>Add a new</h2>
       <PersonForm
         addPerson={addPerson}

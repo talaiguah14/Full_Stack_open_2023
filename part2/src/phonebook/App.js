@@ -10,8 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterPersons, setFilterPersons] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [confirmMessage, setConfirmMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [confirmMessage, setConfirmMessage] = useState(null);
 
   useEffect(() => {
     PhonebookService.getAll().then((initialPerson) => {
@@ -37,10 +37,10 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
+
     const personObject = {
-      id: persons.length + 1,
       name: newName,
-      number: newNumber,
+      phoneNumber: parseInt(newNumber),
     };
 
     const existingPerson = persons.find(
@@ -51,45 +51,64 @@ const App = () => {
         `${existingPerson.name} is alredy added to phonebook, replacethe old number with a new one?`
       );
       if (confirm) {
-        PhonebookService.updatePerson(existingPerson.id, personObject).then(
-          (updatedPerson) => {
-            setPersons(
-              persons.map((person) =>
-                person.id !== existingPerson.id ? person : updatedPerson
-              )
-            );
-            setNewName("");
-            setNewNumber("");
-          }
-        ).catch(error=> {
-          setErrorMessage(`Information of ${existingPerson.name} has already been removed from server`)
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-          setPersons(persons.filter(person => person.id !== existingPerson.id))
-        });
+        PhonebookService.updatePerson(existingPerson.id, personObject)
+          .then((response) => {
+            if (response.status === 200) {
+              setPersons(
+                persons.map((person) =>
+                  person.id !== existingPerson.id ? person : response.data
+                )
+              );
+              setNewName("");
+              setNewNumber("");
+            } else if (response.status === 400) {
+              setErrorMessage(response.data.error.message);
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 5000);
+            }
+          })
+          .catch((error) => {
+            console.log("Error catch", error.response);
+          });
       }
     } else {
-      PhonebookService.createPerson(personObject).then((response) => {
-        const returnedPerson = response.data
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-        if(response.status === 201 && returnedPerson.id !== null){
-          setConfirmMessage(`Added ${returnedPerson.name}`)
-          setTimeout(() => {
-            setConfirmMessage(null)
-          }, 5000)
-        }
-      });
+      PhonebookService.createPerson(personObject)
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("PhonebookService.createPerson", response);
+            const returnedPerson = response.data;
+            setPersons(persons.concat(returnedPerson));
+            setNewName("");
+            setNewNumber("");
+            if (response.status === 201 && returnedPerson.id !== null) {
+              setConfirmMessage(`Added ${returnedPerson.name}`);
+              setTimeout(() => {
+                setConfirmMessage(null);
+              }, 5000);
+            }
+          } else if (response.status === 400) {
+            setErrorMessage(response.data.error.message);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          console.log("Error catch", error.response);
+        });
     }
   };
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={confirmMessage} className={"confirm"}/>
-      <Notification message={errorMessage} className={"error"}/>
-      <Filter  name={"txtFilter"} value={filterPersons} onChange={handlenewFilterPersons} />
+      <Notification message={confirmMessage} className={"confirm"} />
+      <Notification message={errorMessage} className={"error"} />
+      <Filter
+        name={"txtFilter"}
+        value={filterPersons}
+        onChange={handlenewFilterPersons}
+      />
       <h2>Add a new</h2>
       <PersonForm
         addPerson={addPerson}
